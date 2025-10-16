@@ -21,10 +21,10 @@
     allowfullscreen>
   </iframe>
 
-  <!-- 📊 GA4 via Beacon + Redirecionamento -->
+  <!-- 📊 GA4 via Measurement Protocol + Redirecionamento -->
   <script>
     const GA_MEASUREMENT_ID = "G-M46XH8Q7X0";
-    const API_SECRET = "test"; // placeholder (não obrigatório nesse caso)
+    const API_SECRET = "GhOc_XcwRba2mdJazpEy1A";
     const CLIENT_ID = Math.random().toString(36).substring(2);
 
     function sendEvent(name, params = {}) {
@@ -36,23 +36,28 @@
         `https://www.google-analytics.com/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${API_SECRET}`,
         JSON.stringify(payload)
       );
-      console.log("GA4 → evento enviado:", name);
+      console.log("✅ GA4 evento enviado:", name, params);
     }
 
-    // Evento principal: visualização
+    // Evento principal (page_view)
     sendEvent("page_view", {
       page_title: "Sudário Player",
       page_location: "https://www.sudario.uk/",
       engagement_time_msec: 10000
     });
 
-    // Heartbeat (mantém sessão ativa)
-    const hb = setInterval(() => sendEvent("heartbeat", { engagement_time_msec: 5000 }), 5000);
+    // Heartbeat a cada 5 segundos
+    const heartbeat = setInterval(() => {
+      sendEvent("heartbeat", { engagement_time_msec: 5000 });
+    }, 5000);
 
-    // Redirecionamento após 35s
+    // Redirecionamento aos 35s
     setTimeout(() => {
-      clearInterval(hb);
-      sendEvent("redirect_event", { destination: "https://www.youtube.com/c/Sud%C3%A1rioOficial" });
+      clearInterval(heartbeat);
+      sendEvent("redirect_event", {
+        destination: "https://www.youtube.com/c/Sud%C3%A1rioOficial",
+        engagement_time_msec: 35000
+      });
       window.location.href = "https://www.youtube.com/c/Sud%C3%A1rioOficial";
     }, 35000);
   </script>
