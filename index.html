@@ -4,65 +4,57 @@
   <meta charset="UTF-8">
   <title>Sudário Player</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- ⚙️ Anti-cache -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      overflow: hidden;
-    }
-    iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
-    }
+    body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+    iframe { width: 100vw; height: 100vh; border: none; }
   </style>
 </head>
 <body>
 
-  <!-- 🎬 Player do YouTube -->
+  <!-- 🎬 Player YouTube -->
   <iframe 
     src="https://www.youtube.com/embed/hQ_aWXxYVPM?autoplay=1&mute=1&loop=1&playlist=hQ_aWXxYVPM&origin=https://www.sudario.uk"
     allow="autoplay; encrypted-media"
     allowfullscreen>
   </iframe>
 
-  <!-- 📈 Google Analytics 4 (com cache-buster) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46XH8Q7X0?v=2"></script>
+  <!-- 📊 GA4 via Beacon + Redirecionamento -->
   <script>
-    // Inicializa GA4
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-M46XH8Q7X0');
+    const GA_MEASUREMENT_ID = "G-M46XH8Q7X0";
+    const API_SECRET = "test"; // placeholder (não obrigatório nesse caso)
+    const CLIENT_ID = Math.random().toString(36).substring(2);
 
-    // Envia page_view forçado (mesmo que iframe não dispare)
-    gtag('event', 'page_view', {
-      page_title: 'Sudário Player',
-      page_path: '/autoplay'
+    function sendEvent(name, params = {}) {
+      const payload = {
+        client_id: CLIENT_ID,
+        events: [{ name, params }]
+      };
+      navigator.sendBeacon(
+        `https://www.google-analytics.com/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${API_SECRET}`,
+        JSON.stringify(payload)
+      );
+      console.log("GA4 → evento enviado:", name);
+    }
+
+    // Evento principal: visualização
+    sendEvent("page_view", {
+      page_title: "Sudário Player",
+      page_location: "https://www.sudario.uk/",
+      engagement_time_msec: 10000
     });
 
-    // Heartbeat a cada 5s para manter a sessão ativa e enviar engajamento
-    const heartbeat = setInterval(() => {
-      gtag('event', 'heartbeat', {
-        event_category: 'Engajamento',
-        event_label: 'Reprodução contínua',
-        value: Math.floor(performance.now() / 1000)
-      });
-    }, 5000);
+    // Heartbeat (mantém sessão ativa)
+    const hb = setInterval(() => sendEvent("heartbeat", { engagement_time_msec: 5000 }), 5000);
 
-    // ⏱️ Redireciona após 35 segundos de exibição
+    // Redirecionamento após 35s
     setTimeout(() => {
-      clearInterval(heartbeat);
+      clearInterval(hb);
+      sendEvent("redirect_event", { destination: "https://www.youtube.com/c/Sud%C3%A1rioOficial" });
       window.location.href = "https://www.youtube.com/c/Sud%C3%A1rioOficial";
     }, 35000);
   </script>
-
 </body>
 </html>
