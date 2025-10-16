@@ -4,36 +4,52 @@
   <meta charset="UTF-8">
   <title>Sudário Player</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ⚙️ Anti-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <style>
-    body { margin: 0; padding: 0; background: #000; overflow: hidden; }
-    iframe { width: 100vw; height: 100vh; border: none; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
   </style>
 </head>
 <body>
 
+  <!-- 🎬 Player do YouTube -->
   <iframe 
     src="https://www.youtube.com/embed/hQ_aWXxYVPM?autoplay=1&mute=1&loop=1&playlist=hQ_aWXxYVPM&origin=https://www.sudario.uk"
     allow="autoplay; encrypted-media"
     allowfullscreen>
   </iframe>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46XH8Q7X0"></script>
+  <!-- 📈 Google Analytics 4 (com cache-buster) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46XH8Q7X0?v=2"></script>
   <script>
-    // Inicialização da camada de dados e do GA4
+    // Inicializa GA4
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-M46XH8Q7X0');
 
-    // Envio forçado de evento page_view para garantir registro no GA4
+    // Envia page_view forçado (mesmo que iframe não dispare)
     gtag('event', 'page_view', {
       page_title: 'Sudário Player',
       page_path: '/autoplay'
     });
 
-    // "Heartbeat" a cada 5s pra garantir engajamento e evitar timeout
-    let heartbeat = setInterval(() => {
+    // Heartbeat a cada 5s para manter a sessão ativa e enviar engajamento
+    const heartbeat = setInterval(() => {
       gtag('event', 'heartbeat', {
         event_category: 'Engajamento',
         event_label: 'Reprodução contínua',
@@ -41,7 +57,7 @@
       });
     }, 5000);
 
-    // Redireciona após 35 segundos de exibição
+    // ⏱️ Redireciona após 35 segundos de exibição
     setTimeout(() => {
       clearInterval(heartbeat);
       window.location.href = "https://www.youtube.com/c/Sud%C3%A1rioOficial";
