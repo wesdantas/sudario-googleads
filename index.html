@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Sudário - Clipe Oficial</title>
+  <title>Player</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46XH8JQ7X0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M46XH8JQ7X0');
+  </script>
+
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      overflow: hidden;
-    }
-    iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
-    }
+    body { margin: 0; padding: 0; background: #000; }
+    iframe { width: 100vw; height: 100vh; border: none; }
   </style>
 </head>
 <body>
-  <!-- Player YouTube embed com autoplay mudo -->
-  <iframe
+  <iframe 
     src="https://www.youtube.com/embed/kV5_yc1cMoo?autoplay=1&mute=1&loop=1&playlist=kV5_yc1cMoo&origin=https://www.sudario.uk"
-    title="Sudário - Clipe Oficial"
     allow="autoplay; encrypted-media"
     allowfullscreen>
   </iframe>
 
-  <!-- Redireciona para o canal oficial após 35s -->
   <script>
     setTimeout(() => {
       window.location.href = "https://www.youtube.com/@sudario";
