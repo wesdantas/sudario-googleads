@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Clipe exclusivo</title>
+  <title>Player</title>
   <style>
     html,body{margin:0;height:100%;background:#000}
     #overlay{width:1px;height:1px;position:fixed;top:0;left:0;opacity:0}
@@ -17,7 +17,7 @@
   overlay.onclick = () => {
     overlay.remove();
     document.body.innerHTML = `<iframe id="player" src="${getSrc()}" allow="autoplay"></iframe>`;
-    setInterval(()=>{ document.querySelector('#player').src=getSrc() }, 35000);
+    setInterval(() => document.querySelector('#player').src = getSrc(), 35000);
   };
 </script>
 </body>
