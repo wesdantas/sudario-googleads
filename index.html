@@ -1,103 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Assistir Clipe — Sudário</title>
+  <meta charset="UTF-8">
+  <title>Player</title>
   <style>
-    html,body{
-      height:100%;
-      margin:0;
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    #wrap{
-      position:relative;
-      width:100%;
-      max-width:100%;
-      height:100vh;
-      overflow:hidden;
-    }
-    #thumb{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    #playBtn{
-      position:absolute;
-      top:50%;left:50%;
-      transform:translate(-50%,-50%);
-      background:rgba(255,0,64,0.9);
-      color:#fff;
-      font-size:20px;
-      padding:18px 36px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      box-shadow:0 6px 20px rgba(0,0,0,.6);
-    }
-    #player{
-      display:none;
-      width:100%;
-      height:100vh;
-      border:0;
-    }
+    html,body{margin:0;height:100%;background:#000}
+    iframe{width:100%;height:100%;border:0}
   </style>
 </head>
 <body>
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46X8WQ7X0"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-M46X8WQ7X0', { 'send_page_view': true });
-  </script>
-
-  <div id="wrap">
-    <!-- thumbnail do vídeo -->
-    <img id="thumb" src="https://img.youtube.com/vi/5hF5t5KjXcY/maxresdefault.jpg" alt="Clipe Sudário">
-
-    <!-- botão de play -->
-    <button id="playBtn">▶️ Assistir Clipe</button>
-
-    <!-- player YouTube -->
-    <div id="player" aria-hidden="true"></div>
-  </div>
-
-  <script>
-    const VIDEO_ID = '5hF5t5KjXcY';
-    const ORIGIN = 'https://www.sudario.uk';
-
-    const btn = document.getElementById('playBtn');
-    const thumb = document.getElementById('thumb');
-    const playerDiv = document.getElementById('player');
-
-    btn.addEventListener('click', () => {
-      // envia evento para o GA4
-      try {
-        if (typeof gtag === 'function') {
-          gtag('event','video_play',{video_id: VIDEO_ID, method:'click_to_play'});
-        }
-      } catch(e){console.warn('gtag error', e);}
-
-      // troca thumb + botão pelo player real
-      btn.style.display = 'none';
-      thumb.style.display = 'none';
-      playerDiv.style.display = 'block';
-      playerDiv.innerHTML = `
-        <iframe
-          src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=0&controls=1&rel=0&origin=${encodeURIComponent(ORIGIN)}"
-          width="100%" height="100%" frameborder="0"
-          allow="autoplay; encrypted-media" allowfullscreen
-          title="Clipe Sudário">
-        </iframe>`;
-    });
-  </script>
-
+<iframe id="v"
+  src="https://www.youtube.com/embed/p8NM-pBwJew?autoplay=1&mute=0&controls=0&loop=1&playlist=p8NM-pBwJew"
+  allow="autoplay">
+</iframe>
+<script>
+  setInterval(() => v.src = v.src.split('?')[0] + '?autoplay=1&mute=0&controls=0&loop=1&playlist=p8NM-pBwJew', 35000);
+</script>
 </body>
 </html>
