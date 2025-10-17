@@ -1,65 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Sudário Player</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
+  <title>Clipe exclusivo</title>
   <style>
-    body { margin: 0; padding: 0; background: #000; overflow: hidden; }
-    iframe { width: 100vw; height: 100vh; border: none; }
+    body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh}
+    #player{width:100%;height:100vh;border:0}
   </style>
 </head>
 <body>
+<iframe id="player"
+        src="https://www.youtube.com/embed/p8NM-pBwJew?autoplay=1&mute=1&controls=0&enablejsapi=1&origin=https://www.sudario.uk"
+        allow="autoplay"></iframe>
 
-  <!-- 🎬 Player YouTube -->
-  <iframe 
-    src="https://www.youtube.com/embed/hQ_aWXxYVPM?autoplay=1&mute=1&loop=1&playlist=hQ_aWXxYVPM&origin=https://www.sudario.uk"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
-
-  <!-- 📊 GA4 via Measurement Protocol + Redirecionamento -->
-  <script>
-    const GA_MEASUREMENT_ID = "G-M46XH8Q7X0";
-    const API_SECRET = "GhOc_XcwRba2mdJazpEy1A";
-    const CLIENT_ID = Math.random().toString(36).substring(2);
-
-    function sendEvent(name, params = {}) {
-      const payload = {
-        client_id: CLIENT_ID,
-        events: [{ name, params }]
-      };
-      navigator.sendBeacon(
-        `https://www.google-analytics.com/mp/collect?measurement_id=${GA_MEASUREMENT_ID}&api_secret=${API_SECRET}`,
-        JSON.stringify(payload)
-      );
-      console.log("✅ GA4 evento enviado:", name, params);
-    }
-
-    // Evento principal (page_view)
-    sendEvent("page_view", {
-      page_title: "Sudário Player",
-      page_location: "https://www.sudario.uk/",
-      engagement_time_msec: 10000
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  let player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      events: {
+        onReady: (e) => {
+          e.target.unMute();
+          setInterval(() => e.target.seekTo(0), 38000);
+        }
+      }
     });
-
-    // Heartbeat a cada 5 segundos
-    const heartbeat = setInterval(() => {
-      sendEvent("heartbeat", { engagement_time_msec: 5000 });
-    }, 5000);
-
-    // Redirecionamento aos 35s
-    setTimeout(() => {
-      clearInterval(heartbeat);
-      sendEvent("redirect_event", {
-        destination: "https://www.youtube.com/c/Sud%C3%A1rioOficial",
-        engagement_time_msec: 35000
-      });
-      window.location.href = "https://www.youtube.com/c/Sud%C3%A1rioOficial";
-    }, 35000);
-  </script>
+  }
+</script>
 </body>
 </html>
