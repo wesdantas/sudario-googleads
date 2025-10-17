@@ -1,24 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Player</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Assistir Clipe — Sudário</title>
   <style>
-    html,body{margin:0;height:100%;background:#000}
-    #overlay{width:1px;height:1px;position:fixed;top:0;left:0;opacity:0}
-    #player{width:100%;height:100%;border:0}
+    html,body{height:100%;margin:0;background:#000}
+    #wrap{height:100vh;position:relative}
+    #playBtn{
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      background:#ff0040;color:#fff;font-size:18px;
+      padding:18px 34px;border:none;border-radius:8px;
+      cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.6)
+    }
+    #player{display:none;width:100%;height:100vh}
+    #playBtn:focus{outline:3px solid rgba(255,255,255,0.25)}
   </style>
 </head>
 <body>
-<div id="overlay"></div>
-<script>
-  const vidId = 'p8NM-pBwJew';
-  const getSrc = () => `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=0&controls=0&loop=1&playlist=${vidId}&origin=${location.origin}`;
-  overlay.onclick = () => {
-    overlay.remove();
-    document.body.innerHTML = `<iframe id="player" src="${getSrc()}" allow="autoplay"></iframe>`;
-    setInterval(() => document.querySelector('#player').src = getSrc(), 35000);
-  };
-</script>
+  <!-- GA4: verifique o Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-M46X8WQ7X0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-M46X8WQ7X0', { 'send_page_view': true });
+  </script>
+
+  <div id="wrap">
+    <button id="playBtn" aria-label="Assistir clipe">▶️ Assistir Clipe</button>
+    <div id="player" aria-hidden="true" title="Player"></div>
+  </div>
+
+  <script>
+    const VIDEO_ID = '5hF5t5KjXcY';
+    const ORIGIN = 'https://www.sudario.uk';
+
+    const btn = document.getElementById('playBtn');
+    const playerDiv = document.getElementById('player');
+
+    btn.addEventListener('click', () => {
+      try {
+        if (typeof gtag === 'function') {
+          gtag('event','video_play',{video_id: VIDEO_ID, method:'click_to_play'});
+        }
+      } catch(e){console.warn('gtag error',e);}
+
+      btn.style.display = 'none';
+      playerDiv.style.display = 'block';
+      playerDiv.setAttribute('aria-hidden','false');
+      playerDiv.innerHTML = `
+        <iframe title="Clipe Sudário"
+          src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&mute=0&controls=1&rel=0&origin=${encodeURIComponent(ORIGIN)}"
+          width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>`;
+      // Se quiser redirect automático após X ms (ex: 35000), descomente:
+      // setTimeout(()=>{window.location.href='https://www.youtube.com/c/Sud%C3%A1rioOficial'},35000);
+    });
+  </script>
 </body>
 </html>
